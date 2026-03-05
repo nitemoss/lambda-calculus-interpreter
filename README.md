@@ -9,7 +9,7 @@ numerals, and an interactive REPL.
 ### Interactive REPL
 
 ```
-python interpreter.py
+python main.py
 ```
 
 ```
@@ -25,13 +25,13 @@ Lambda Calculus Interpreter  (type :help for usage, :quit to exit)
 ### Run a file
 
 ```
-python interpreter.py program.lc
+python main.py program.lc
 ```
 
 ### Run a file with step trace
 
 ```
-python interpreter.py --trace program.lc
+python main.py --trace program.lc
 ```
 
 ## REPL Commands
@@ -167,6 +167,24 @@ mul #2 #3 f x
 
 Definitions (`name = term`) are stored in the environment and available to all
 subsequent lines. Expression lines are evaluated and their results printed.
+
+## Project structure
+
+```
+main.py           entry point (REPL / file runner)
+terms.py          AST dataclasses (Var, Lam, App, Lit, BinOp, If)
+reduction.py      free_vars, subst, reduce_step, evaluate
+parser.py         tokenizer, Parser, parse, Church numeral builder
+environment.py    Environment (named definitions)
+repl.py           repl(), run_file(), help text
+tests/
+  test_parse.py         parser / AST construction
+  test_free_vars.py     free variable analysis
+  test_substitution.py  capture-avoiding substitution
+  test_evaluate.py      full evaluation
+  test_files.py         file-based evaluation
+  testdata/             .lc input files used by test_files.py
+```
 
 ## Running tests
 

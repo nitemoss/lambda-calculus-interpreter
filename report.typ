@@ -52,7 +52,7 @@ On top of this core the interpreter provides:
 
 = Data Structures
 
-== Term Representation
+== Term Representation (`terms.py`)
 
 Lambda terms are represented as a recursive algebraic structure. Each node in
 the abstract syntax tree (AST) is an instance of one of the following Python
@@ -93,12 +93,11 @@ class If:
 Term = Var | Lam | App | Lit | BinOp | If
 ```
 
-This representation uses named variables. It
-is simple to read and print, at the cost of requiring $alpha$-renaming during
-substitution to avoid variable capture.
+This representation uses named variables. It is simple to read and print, at
+the cost of requiring $alpha$-renaming during substitution to avoid variable
+capture.
 
-
-== Name Supply
+== Name Supply (`reduction.py`)
 
 A global integer counter provides fresh variable names. When $alpha$-renaming
 is needed, a new name of the form `x_N` (where `N` is the counter value) is
@@ -106,7 +105,7 @@ generated and the counter is incremented.
 
 = Algorithms
 
-== Free Variables
+== Free Variables (`reduction.py`)
 
 The set of free variables of a term is computed recursively:
 
@@ -119,7 +118,7 @@ $
 For extension nodes (`BinOp`, `If`, `Lit`), free variables are the union of
 free variables in all sub-terms.
 
-== Substitution
+== Substitution (`reduction.py`)
 
 Capture-avoiding substitution $M[sfrac(N,x)]$ (replace all free occurrences of $x$ in
 $M$ by $N$) follows the standard rules:
@@ -135,7 +134,7 @@ $
 where $y'$ is a fresh name. The last rule performs $alpha$-renaming to prevent
 the free variable $y$ in $N$ from becoming bound.
 
-== Reduction Strategy
+== Reduction Strategy (`reduction.py`)
 
 The interpreter implements *normal-order* (outermost-leftmost) reduction. This
 strategy reduces the leftmost, outermost redex first and is guaranteed to find
@@ -188,7 +187,7 @@ The parser accepts `λx y z. t` as sugar for `λx. λy. λz. t` (currying).
 
 == REPL
 
-Running `python interpreter.py` starts an interactive read-eval-print loop:
+Running `python main.py` starts an interactive read-eval-print loop:
 
 ```
 λ> (\x. x x) (\x. x)
@@ -207,7 +206,7 @@ Special REPL commands:
 == File Mode
 
 ```
-python interpreter.py program.lc
+python main.py program.lc
 ```
 
 Reads definitions and expressions from the file and prints results to stdout.
@@ -321,8 +320,8 @@ the following extensions are most important:
 
 The interpreter demonstrates the core mechanics of lambda calculus reduction —
 free-variable analysis, capture-avoiding substitution, and normal-order
-evaluation — in approximately 500 lines of well-commented Python. The
-extensions (arithmetic, booleans, let bindings, Church numerals) show how a
-minimal formal calculus can be grown into a usable evaluator. The future work
-outlined above maps a clear path from this prototype toward a full functional
-language implementation.
+evaluation — across six focused Python modules (`terms`, `reduction`, `parser`,
+`environment`, `repl`, `main`). The extensions (arithmetic, booleans, let
+bindings, Church numerals) show how a minimal formal calculus can be grown into
+a usable evaluator. The future work outlined above maps a clear path from this
+prototype toward a full functional language implementation.
