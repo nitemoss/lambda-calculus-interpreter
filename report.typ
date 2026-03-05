@@ -4,6 +4,9 @@
 #set heading(numbering: "1.1.")
 #set par(justify: true)
 
+// Diagonal (solidus) fraction: N⁄x with N top-left, x bottom-right
+#let sfrac(num, den) = $attach(slash, tl: num, br: den)$
+
 #align(center)[
   #text(17pt, weight: "bold")[Extended Lambda Calculus Interpreter]
   #v(0.4em)
@@ -36,7 +39,7 @@ $x$ and returns $M$), and $M N$ is application (the function $M$ applied to
 argument $N$). Reduction is governed by the $beta$-reduction rule:
 
 $
-(lambda x.M) N ->_beta M[N\/x]
+(lambda x.M) N ->_beta M[sfrac(N,x)]
 $
 
 On top of this core the interpreter provides:
@@ -118,15 +121,15 @@ free variables in all sub-terms.
 
 == Substitution
 
-Capture-avoiding substitution $M[N\/x]$ (replace all free occurrences of $x$ in
+Capture-avoiding substitution $M[sfrac(N,x)]$ (replace all free occurrences of $x$ in
 $M$ by $N$) follows the standard rules:
 
 $
-x[N\/x] = N \
-y[N\/x] = y, quad y != x \
-(lambda x.M)[N\/x] = lambda x.M \
-(lambda y.M)[N\/x] = lambda y.(M[N\/x]), quad y in.not "fv"(N) \
-(lambda y.M)[N\/x] = lambda y'.(M[y'\/y][N\/x]), quad y in "fv"(N)
+x[sfrac(N,x)] = N \
+y[sfrac(N,x)] = y, quad y != x \
+(lambda x.M)[sfrac(N,x)] = lambda x.M \
+(lambda y.M)[sfrac(N,x)] = lambda y.(M[sfrac(N,x)]), quad y in.not "fv"(N) \
+(lambda y.M)[sfrac(N,x)] = lambda y'.(M[sfrac(y',y)][sfrac(N,x)]), quad y in "fv"(N)
 $
 
 where $y'$ is a fresh name. The last rule performs $alpha$-renaming to prevent
