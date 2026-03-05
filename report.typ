@@ -94,3 +94,24 @@ This representation is a standard _de Bruijn-free_ named representation. It is
 simple to read and print, at the cost of requiring $alpha$-renaming during
 substitution to avoid variable capture.
 
+
+== Name Supply
+
+A global integer counter provides fresh variable names. When $alpha$-renaming
+is needed, a new name of the form `x_N` (where `N` is the counter value) is
+generated and the counter is incremented. This is sufficient for a single
+evaluation session; a more robust implementation would thread the supply
+through a state monad or use a proper gensym table.
+
+== Substitution
+
+Capture-avoiding substitution $t[x := s]$ follows the standard rules:
+
+$
+x[x := s] &= s \
+y[x := s] &= y quad (y eq.not x) \
+(lambda x . t)[x := s] &= lambda x . t \
+(lambda y . t)[x := s] &= lambda y . (t[x := s]) quad y in.not "fv"(s) \
+(lambda y . t)[x := s] &= lambda y' . (t[y := y'][x := s]) quad y in "fv"(s)
+$
+

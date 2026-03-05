@@ -157,3 +157,65 @@ def free_vars(term: Term) -> set[str]:
         case If(cond, then_, else_):
             return free_vars(cond) | free_vars(then_) | free_vars(else_)
 
+
+# ---------------------------------------------------------------------------
+# PART 3 — FRESH NAME SUPPLY
+# ---------------------------------------------------------------------------
+# When we rename a variable to avoid a clash, we need a name that is not
+# already used anywhere. We generate names like  x_1, x_2, x_3, …
+
+_fresh_counter = 0
+
+def fresh(base: str) -> str:
+    """Return a new variable name derived from 'base' that has never been used."""
+    global _fresh_counter
+    _fresh_counter += 1
+    return f"{base}_{_fresh_counter}"
+
+
+# ---------------------------------------------------------------------------
+# PART 4 — SUBSTITUTION
+# ---------------------------------------------------------------------------
+# Substitution replaces every free occurrence of a variable with a new term.
+# Written  term[var := replacement].
+# Example of the problem:
+#   (λy. x)[x := y]   should give  λz. y  (rename binder to avoid clash)
+#   Without renaming we'd get  λy. y  where the substituted 'y' is now
+#   captured by the binder — that changes the meaning entirely.
+
+def subst(term: Term, var: str, replacement: Term) -> Term:
+    """Return 'term' with every free occurrence of 'var' replaced by 'replacement'."""
+    match term:
+        case Var(name):
+            # If this variable IS the one we are replacing, swap it out
+            return replacement if name == var else term
+
+        case Lam(param, body):
+            if param == var:
+                # The lambda re-binds 'var', so 'var' is not free in the body.
+                # Nothing to substitute inside.
+                return term
+            if param in free_vars(replacement):
+                # The lambda's parameter clashes with a free variable in the
+                # replacement. Rename the parameter to avoid capture.
+                new_param = fresh(param)
+                body = subst(body, param, Var(new_param))
+                param = new_param
+            return Lam(param, subst(body, var, replacement))
+
+        case App(func, arg):
+            return App(subst(func, var, replacement),
+                       subst(arg,  var, replacement))
+
+        case Lit():
+            return term  # literals contain no variables
+
+        case BinOp(op, left, right):
+            return BinOp(op, subst(left, var, replacement),
+                             subst(right, var, replacement))
+
+        case If(cond, then_, else_):
+            return If(subst(cond,  var, replacement),
+                      subst(then_, var, replacement),
+                      subst(else_, var, replacement))
+
