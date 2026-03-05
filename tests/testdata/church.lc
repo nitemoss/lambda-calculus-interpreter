@@ -1,0 +1,11 @@
+-- Church numeral examples
+-- Definitions
+add = \m n f x. m f (n f x)
+mul = \m n f. m (n f)
+
+-- Applications
+#0 f x
+#1 f x
+#2 f x
+add #2 #3 f x
+mul #2 #3 f x

@@ -1,0 +1,6 @@
+-- Let binding examples
+let x = 7 in x
+let double = \n. (n + n) in double 5
+let x = 3 in let y = 4 in (x + y)
+let x = 5 in if (x < 10) then (x * 2) else x
+let sq = \n. (n * n) in ((sq 3) + (sq 4))

@@ -1,0 +1,6 @@
+-- Conditional expressions
+if true then 1 else 2
+if false then 1 else 2
+if true then (if false then 1 else 2) else 3
+if (5 == 5) then true else false
+if (3 < 10) then 42 else 0
