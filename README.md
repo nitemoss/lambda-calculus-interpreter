@@ -1,3 +1,5 @@
+Detailed report is available here: https://github.com/nitemoss/lambda-calculus-interpreter/blob/main/report.pdf
+
 # Lambda Calculus Interpreter
 
 An extended untyped lambda calculus interpreter with
