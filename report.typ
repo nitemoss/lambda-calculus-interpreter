@@ -103,6 +103,21 @@ generated and the counter is incremented. This is sufficient for a single
 evaluation session; a more robust implementation would thread the supply
 through a state monad or use a proper gensym table.
 
+= Algorithms
+
+== Free Variables
+
+The set of free variables of a term is computed recursively:
+
+$
+"fv"(x) &= {x} \
+"fv"(lambda x . t) &= "fv"(t) without {x} \
+"fv"(t_1 space t_2) &= "fv"(t_1) union "fv"(t_2)
+$
+
+For extension nodes, free variables are the union of free variables in all
+sub-terms.
+
 == Substitution
 
 Capture-avoiding substitution $t[x := s]$ follows the standard rules:
