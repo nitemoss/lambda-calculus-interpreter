@@ -387,6 +387,9 @@ class Parser:
             elif text[i:i+2] == "==":
                 tokens.append("==")
                 i += 2
+            elif c == "=":
+                tokens.append("=")
+                i += 1
             elif c in "+-*<":
                 tokens.append(c)
                 i += 1
