@@ -3,7 +3,8 @@
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from interpreter import free_vars, parse
+from reduction import free_vars
+from parser import parse
 
 
 def test_variable_is_free():

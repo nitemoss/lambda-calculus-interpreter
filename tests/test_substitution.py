@@ -3,7 +3,9 @@
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from interpreter import subst, parse, Var, Lam, Lit
+from reduction import subst
+from parser import parse
+from terms import Var, Lam, Lit
 
 
 def test_replace_matching_variable():

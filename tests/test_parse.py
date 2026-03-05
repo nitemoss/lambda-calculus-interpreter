@@ -4,7 +4,8 @@ import pytest
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from interpreter import parse, Var, Lam, App, Lit, BinOp, If
+from parser import parse
+from terms import Var, Lam, App, Lit, BinOp, If
 
 
 def test_variable():

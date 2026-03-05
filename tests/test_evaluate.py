@@ -4,7 +4,9 @@ import pytest
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from interpreter import parse, evaluate, Lit, Lam, Var, App, NonTerminatingError
+from parser import parse
+from reduction import evaluate, NonTerminatingError
+from terms import Lit, Lam, Var, App
 
 
 def run(expr: str):

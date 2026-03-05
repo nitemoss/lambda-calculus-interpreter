@@ -3,7 +3,10 @@
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from interpreter import parse, evaluate, Environment, Lit, Var, App, Lam
+from parser import parse
+from reduction import evaluate
+from environment import Environment
+from terms import Lit, Var, App, Lam
 
 TESTDATA = os.path.join(os.path.dirname(__file__), "testdata")
 
